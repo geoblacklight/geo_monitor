@@ -10,4 +10,9 @@ class TestAppGenerator < Rails::Generators::Base
   def install_engine
     generate 'geo_monitor:install'
   end
+
+  def run_spotlight_migrations
+    rake 'geo_monitor:install:migrations'
+    rake 'db:migrate'
+  end
 end
