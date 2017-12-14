@@ -1,5 +1,6 @@
 module GeoMonitor
   class Layer < ApplicationRecord
+    has_many :statuses
 
     ##
     # @param [String] schema_json
@@ -18,6 +19,16 @@ module GeoMonitor
     def bounding_box
       w, e, n, s = bbox.delete('ENVELOPE(').delete(')').delete(' ').split(',')
       GeoMonitor::BoundingBox.new(north: n, south: s, east: e, west: w)
+    end
+
+    def check
+      response = nil
+      time = Benchmark.measure do
+        response = GeoMonitor::Requests::WMS.new(
+          bbox: bounding_box, url: url, layers: layername
+        ).tile
+      end
+      GeoMonitor::Status.from_response(response, self, time.real.to_f)
     end
   end
 end

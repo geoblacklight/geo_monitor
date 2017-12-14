@@ -12,5 +12,7 @@ module GeoMonitor
   # Top level Rails Engine class
   class Engine < ::Rails::Engine
     isolate_namespace GeoMonitor
+
+    GeoMonitor::Engine.config.max_status_per_layer = 5
   end
 end

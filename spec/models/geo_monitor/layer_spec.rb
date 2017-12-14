@@ -25,4 +25,23 @@ describe GeoMonitor::Layer do
       expect(subject.bounding_box.west).to eq 29.572742
     end
   end
+  describe '#check' do
+    before do
+      stub_request(
+        :get,
+        %r{https:\/\/geowebservices.stanford.edu\/geoserver\/wms}
+      ).to_return(status: 200, headers: {})
+    end
+    it 'creates a GeoMonitor::Status' do
+      expect(subject.check).to be_an GeoMonitor::Status
+    end
+    it 'sends through correct arguments' do
+      expect(GeoMonitor::Status).to receive(:from_response).with(
+        kind_of(Faraday::Response),
+        kind_of(GeoMonitor::Layer),
+        kind_of(Float)
+      )
+      subject.check
+    end
+  end
 end
