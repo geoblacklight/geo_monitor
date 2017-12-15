@@ -30,5 +30,9 @@ module GeoMonitor
       end
       GeoMonitor::Status.from_response(response, self, time.real.to_f)
     end
+
+    def availability_score
+      statuses.where(res_code: '200').count.to_f / statuses.count
+    end
   end
 end

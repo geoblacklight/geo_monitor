@@ -44,4 +44,13 @@ describe GeoMonitor::Layer do
       subject.check
     end
   end
+  describe '#availability_score' do
+    before do
+      4.times { GeoMonitor::Status.create(layer: subject, res_code: '200') }
+      1.times { GeoMonitor::Status.create(layer: subject, res_code: '404') }
+    end
+    it 'calculates the availability score' do
+      expect(subject.availability_score).to eq 0.8
+    end
+  end
 end
