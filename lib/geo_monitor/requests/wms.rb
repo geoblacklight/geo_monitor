@@ -33,11 +33,24 @@ module GeoMonitor
       ##
       # Request the tile.
       def tile
+        unless url.present?
+          return GeoMonitor::FailedResponse.new(
+            { url: url }, 'No URL provided', {}
+          )
+        end
         conn = Faraday.new(url: url)
-        conn.get do |request|
-          request.params = request_params
-          request.options.timeout = 10
-          request.options.open_timeout = 10
+        begin
+          conn.get do |request|
+            request.params = request_params
+            request.options.timeout = 10
+            request.options.open_timeout = 10
+          end
+        rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
+          GeoMonitor::FailedResponse.new(
+            { url: conn.url_prefix.to_s },
+            e.class,
+            nil
+          )
         end
       end
     end
