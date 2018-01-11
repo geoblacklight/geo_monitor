@@ -24,7 +24,7 @@ module GeoMonitor
     def check
       response = nil
       time = Benchmark.measure do
-        response = GeoMonitor::Requests::WMS.new(
+        response = ::GeoMonitor::Requests::WMS.new(
           bbox: bounding_box, url: url, layers: layername
         ).tile
       end
