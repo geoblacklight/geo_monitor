@@ -7,7 +7,7 @@ module GeoMonitor
     # Limits the number of statuses per layer to prevent a ballooing database
     def limit_by_layer
       statuses_by_layer = self.class.where(layer: layer).count
-      max = GeoMonitor::Engine.config.max_status_per_layer
+      max = ::GeoMonitor::Engine.config.max_status_per_layer
       self.class
           .where(layer: layer)
           .last(statuses_by_layer - max + 1)

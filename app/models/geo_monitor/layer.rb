@@ -28,7 +28,7 @@ module GeoMonitor
           bbox: bounding_box, url: url, layers: layername
         ).tile
       end
-      GeoMonitor::Status.from_response(response, self, time.real.to_f)
+      ::GeoMonitor::Status.from_response(response, self, time.real.to_f)
     end
 
     def availability_score

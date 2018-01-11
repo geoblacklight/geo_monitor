@@ -14,8 +14,8 @@ module GeoMonitor
       max = 1 - 1E-15
       sin = [[Math.sin(lng * d), max].min, -max].max
       self.class.new(
-        lat: GeoMonitor::R * lat * d,
-        lng: GeoMonitor::R * Math.log((1 + sin) / (1 - sin)) / 2
+        lat: ::GeoMonitor::Constants::R * lat * d,
+        lng: ::GeoMonitor::Constants::R * Math.log((1 + sin) / (1 - sin)) / 2
       )
     end
 
