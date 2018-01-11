@@ -38,10 +38,10 @@ module GeoMonitor
       lng_diff = east - west
       max_diff = [lat_diff, lng_diff].max
 
-      if max_diff < GeoMonitor::DEGREES_IN_CIRCLE / 2**20
+      if max_diff < ::GeoMonitor::DEGREES_IN_CIRCLE / 2**20
         zoom = 21
       else
-        zoom = -1 * ((Math.log(max_diff) / Math.log(2)) - (Math.log(GeoMonitor::DEGREES_IN_CIRCLE) / Math.log(2)))
+        zoom = -1 * ((Math.log(max_diff) / Math.log(2)) - (Math.log(::GeoMonitor::DEGREES_IN_CIRCLE) / Math.log(2)))
         zoom = 1 if zoom < 1
       end
       zoom.ceil
@@ -52,7 +52,7 @@ module GeoMonitor
     def tile_number
       lat_rad = south / 180 * Math::PI
       n = 2.0**zoom_level
-      x = ((west + 180.0) / GeoMonitor::DEGREES_IN_CIRCLE * n).to_i
+      x = ((west + 180.0) / ::GeoMonitor::DEGREES_IN_CIRCLE * n).to_i
       y = ((1.0 - Math.log(Math.tan(lat_rad) + (1 / Math.cos(lat_rad))) / Math::PI) / 2.0 * n)
       y = if y.infinite?.nil?
             y.to_i
