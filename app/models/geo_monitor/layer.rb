@@ -18,7 +18,7 @@ module GeoMonitor
 
     def bounding_box
       w, e, n, s = bbox.delete('ENVELOPE(').delete(')').delete(' ').split(',')
-      GeoMonitor::BoundingBox.new(north: n, south: s, east: e, west: w)
+      ::GeoMonitor::BoundingBox.new(north: n, south: s, east: e, west: w)
     end
 
     def check

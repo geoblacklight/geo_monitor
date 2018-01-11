@@ -20,8 +20,8 @@ module GeoMonitor
     def tile_bounds
       tile = tile_number
       zoom = zoom_level
-      sw = GeoMonitor::LatLngPoint.from_number(tile[:x], tile[:y], zoom).to_3857
-      ne = GeoMonitor::LatLngPoint.from_number(tile[:x] + 1, tile[:y] - 1, zoom).to_3857
+      sw = ::GeoMonitor::LatLngPoint.from_number(tile[:x], tile[:y], zoom).to_3857
+      ne = ::GeoMonitor::LatLngPoint.from_number(tile[:x] + 1, tile[:y] - 1, zoom).to_3857
       self.class.new(
         north: ne.lat,
         east: ne.lng,
