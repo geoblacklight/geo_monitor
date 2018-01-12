@@ -15,7 +15,7 @@ module GeoMonitor
     end
 
     ##
-    # @param [Faraday::Resposne] response
+    # @param [Faraday::Response] response
     # @param [GeoMonitor::Layer] layer
     # @param [Float] time
     def self.from_response(response, layer, time)
@@ -24,7 +24,8 @@ module GeoMonitor
         res_code: response.status,
         submitted_query: response.env[:url].to_s,
         layer: layer,
-        res_headers: response.headers
+        res_headers: response.headers,
+        content_type: response.headers.try(:[], :content_type)
       )
     end
   end

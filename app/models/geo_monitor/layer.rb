@@ -37,7 +37,7 @@ module GeoMonitor
     end
 
     def availability_score
-      statuses.where(res_code: '200').count.to_f / statuses.count
+      statuses.where(res_code: '200', content_type: 'image/png').count.to_f / statuses.count
     end
   end
 end

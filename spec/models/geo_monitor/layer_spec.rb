@@ -60,7 +60,7 @@ describe GeoMonitor::Layer do
   end
   describe '#availability_score' do
     before do
-      4.times { GeoMonitor::Status.create(layer: subject, res_code: '200') }
+      4.times { GeoMonitor::Status.create(layer: subject, res_code: '200', content_type: 'image/png') }
       1.times { GeoMonitor::Status.create(layer: subject, res_code: '404') }
     end
     it 'calculates the availability score' do
