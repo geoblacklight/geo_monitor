@@ -8,10 +8,15 @@ module GeoMonitor
       schema = JSON.parse(schema_json)
       references = JSON.parse(schema['dct_references_s'])
       find_or_create_by(slug: schema['layer_slug_s']) do |layer|
-        layer.checktype = 'WMS'
+        layer.checktype = 
+          if references['http://www.opengis.net/def/serviceType/ogc/wms']
+            'WMS'
+          elsif references['http://iiif.io/api/image']
+            'IIIF'
+          end
         layer.layername = schema['layer_id_s']
         layer.bbox = schema['solr_geom']
-        layer.url = references['http://www.opengis.net/def/serviceType/ogc/wms']
+        layer.url = references['http://www.opengis.net/def/serviceType/ogc/wms'] || references['http://iiif.io/api/image']
         layer.active = true
       end
     end
