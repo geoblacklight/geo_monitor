@@ -8,10 +8,17 @@ module GeoMonitor
       schema = JSON.parse(schema_json)
       references = JSON.parse(schema['dct_references_s'])
       find_or_create_by(slug: schema['layer_slug_s']) do |layer|
-        layer.checktype = 'WMS'
+        layer.checktype = 
+          if references['http://www.opengis.net/def/serviceType/ogc/wms']
+            'WMS'
+          elsif references['http://iiif.io/api/image']
+            'IIIF'
+          end
+        layer.institution = schema['dct_provenance_s']
+        layer.rights = schema['dc_rights_s']
         layer.layername = schema['layer_id_s']
         layer.bbox = schema['solr_geom']
-        layer.url = references['http://www.opengis.net/def/serviceType/ogc/wms']
+        layer.url = references['http://www.opengis.net/def/serviceType/ogc/wms'] || references['http://iiif.io/api/image']
         layer.active = true
       end
     end
@@ -28,11 +35,11 @@ module GeoMonitor
           bbox: bounding_box, url: url, layers: layername
         ).tile
       end
-      GeoMonitor::Status.from_response(response, self, time.real.to_f)
+      ::GeoMonitor::Status.from_response(response, self, time.real.to_f)
     end
 
     def availability_score
-      statuses.where(res_code: '200').count.to_f / statuses.count
+      statuses.where(res_code: '200', content_type: 'image/png').count.to_f / statuses.count
     end
   end
 end

@@ -4,14 +4,32 @@ describe GeoMonitor::Layer do
   let(:schema_json) { File.read('spec/fixtures/cz128vq0535.json') }
   subject { described_class.from_geoblacklight(schema_json) }
   describe '.from_geoblacklight' do
-    it 'creates an instance with expected fields' do
-      expect(subject.checktype).to eq 'WMS'
-      expect(subject.slug).to eq 'stanford-cz128vq0535'
-      expect(subject.layername).to eq 'druid:cz128vq0535'
-      expect(subject.bbox)
-        .to eq 'ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)'
-      expect(subject.active).to eq true
-      expect(subject.url).to eq 'https://geowebservices.stanford.edu/geoserver/wms'
+    context 'WMS layer' do
+      it 'creates an instance with expected fields' do
+        expect(subject.checktype).to eq 'WMS'
+        expect(subject.slug).to eq 'stanford-cz128vq0535'
+        expect(subject.layername).to eq 'druid:cz128vq0535'
+        expect(subject.bbox)
+          .to eq 'ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)'
+        expect(subject.active).to eq true
+        expect(subject.institution).to eq 'Stanford'
+        expect(subject.rights).to eq 'Public'
+        expect(subject.url).to eq 'https://geowebservices.stanford.edu/geoserver/wms'
+      end
+    end
+    context 'IIIF layer' do
+      let(:schema_json) { File.read('spec/fixtures/image.json') }
+      it 'creates an instance with expected fields' do
+        expect(subject.checktype).to eq 'IIIF'
+        expect(subject.slug).to eq 'princeton-jd472z992'
+        expect(subject.layername).to eq 'jd472z992'
+        expect(subject.bbox)
+          .to eq 'ENVELOPE(-73.727775, -66.8850751, 47.459686, 40.950943)'
+        expect(subject.active).to eq true
+        expect(subject.institution).to eq 'Princeton'
+        expect(subject.rights).to eq 'Public'
+        expect(subject.url).to eq 'https://libimages.princeton.edu/loris/pulmap/jd/47/2z/99/2/00000001.jp2/info.json'
+      end
     end
   end
   describe '#bounding_box' do
@@ -46,7 +64,7 @@ describe GeoMonitor::Layer do
   end
   describe '#availability_score' do
     before do
-      4.times { GeoMonitor::Status.create(layer: subject, res_code: '200') }
+      4.times { GeoMonitor::Status.create(layer: subject, res_code: '200', content_type: 'image/png') }
       1.times { GeoMonitor::Status.create(layer: subject, res_code: '404') }
     end
     it 'calculates the availability score' do

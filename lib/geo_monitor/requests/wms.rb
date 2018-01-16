@@ -34,7 +34,7 @@ module GeoMonitor
       # Request the tile.
       def tile
         unless url.present?
-          return GeoMonitor::FailedResponse.new(
+          return ::GeoMonitor::FailedResponse.new(
             { url: url }, 'No URL provided', {}
           )
         end
@@ -46,7 +46,7 @@ module GeoMonitor
             request.options.open_timeout = 10
           end
         rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
-          GeoMonitor::FailedResponse.new(
+          ::GeoMonitor::FailedResponse.new(
             { url: conn.url_prefix.to_s },
             e.class,
             nil

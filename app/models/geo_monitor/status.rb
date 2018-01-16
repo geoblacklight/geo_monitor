@@ -7,7 +7,7 @@ module GeoMonitor
     # Limits the number of statuses per layer to prevent a ballooing database
     def limit_by_layer
       statuses_by_layer = self.class.where(layer: layer).count
-      max = GeoMonitor::Engine.config.max_status_per_layer
+      max = ::GeoMonitor::Engine.config.max_status_per_layer
       self.class
           .where(layer: layer)
           .last(statuses_by_layer - max + 1)
@@ -15,7 +15,7 @@ module GeoMonitor
     end
 
     ##
-    # @param [Faraday::Resposne] response
+    # @param [Faraday::Response] response
     # @param [GeoMonitor::Layer] layer
     # @param [Float] time
     def self.from_response(response, layer, time)
@@ -24,7 +24,8 @@ module GeoMonitor
         res_code: response.status,
         submitted_query: response.env[:url].to_s,
         layer: layer,
-        res_headers: response.headers
+        res_headers: response.headers,
+        content_type: response.headers.try(:[], :content_type)
       )
     end
   end
