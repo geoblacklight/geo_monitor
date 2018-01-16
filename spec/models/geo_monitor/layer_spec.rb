@@ -12,6 +12,8 @@ describe GeoMonitor::Layer do
         expect(subject.bbox)
           .to eq 'ENVELOPE(29.572742, 35.000308, 4.234077, -1.478794)'
         expect(subject.active).to eq true
+        expect(subject.institution).to eq 'Stanford'
+        expect(subject.rights).to eq 'Public'
         expect(subject.url).to eq 'https://geowebservices.stanford.edu/geoserver/wms'
       end
     end
@@ -24,6 +26,8 @@ describe GeoMonitor::Layer do
         expect(subject.bbox)
           .to eq 'ENVELOPE(-73.727775, -66.8850751, 47.459686, 40.950943)'
         expect(subject.active).to eq true
+        expect(subject.institution).to eq 'Princeton'
+        expect(subject.rights).to eq 'Public'
         expect(subject.url).to eq 'https://libimages.princeton.edu/loris/pulmap/jd/47/2z/99/2/00000001.jp2/info.json'
       end
     end

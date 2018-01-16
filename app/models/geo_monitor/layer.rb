@@ -14,6 +14,8 @@ module GeoMonitor
           elsif references['http://iiif.io/api/image']
             'IIIF'
           end
+        layer.institution = schema['dct_provenance_s']
+        layer.rights = schema['dc_rights_s']
         layer.layername = schema['layer_id_s']
         layer.bbox = schema['solr_geom']
         layer.url = references['http://www.opengis.net/def/serviceType/ogc/wms'] || references['http://iiif.io/api/image']
