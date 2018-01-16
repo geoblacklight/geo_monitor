@@ -7,8 +7,8 @@ module GeoMonitor
     def self.from_geoblacklight(schema_json)
       schema = JSON.parse(schema_json)
       references = JSON.parse(schema['dct_references_s'] || '{}')
-      find_or_create_by(slug: schema['layer_slug_s']) do |layer|
-        layer.checktype = 
+      find_or_create_by(slug: schema['layer_slug_s']).tap do |layer|
+        layer.checktype =
           if references['http://www.opengis.net/def/serviceType/ogc/wms']
             'WMS'
           elsif references['http://iiif.io/api/image']
