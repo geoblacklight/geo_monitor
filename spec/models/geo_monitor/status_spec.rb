@@ -20,6 +20,12 @@ describe GeoMonitor::Status do
       expect { 10.times { described_class.from_response(response, layer, 0.007) } }
         .to change { described_class.count }.by(5)
     end
+    it 'will delete the first entries' do
+      response = request.tile
+      first_status = described_class.from_response(response, layer, 0.007)
+      5.times { described_class.from_response(response, layer, 0.007) }
+      expect { described_class.find(first_status.id) } .to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
   describe '.from_response' do
     it 'creates a GeoMonitor::Status' do

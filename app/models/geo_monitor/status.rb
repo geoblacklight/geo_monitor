@@ -10,7 +10,7 @@ module GeoMonitor
       max = ::GeoMonitor::Engine.config.max_status_per_layer
       self.class
           .where(layer: layer)
-          .last(statuses_by_layer - max + 1)
+          .first(statuses_by_layer - max + 1)
           .map(&:destroy) if statuses_by_layer >= max
     end
 
