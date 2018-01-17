@@ -18,10 +18,11 @@ describe GeoMonitor::Requests::WMS do
       it 'requests a wms tile' do
         stub = stub_request(
           :get,
-          'https://geowebservices.stanford.edu/geoserver/wms?BBOX=3264742.590082'\
-            '5034,0.0,3995282.329624239,625168.6816906171&CRS=EPSG:900913&FORMAT'\
-            '=image/png&HEIGHT=256&LAYERS=druid:cz128vq0535&REQUEST=GetMap&SERVI'\
-            'CE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH=256'
+          'https://geowebservices.stanford.edu/geoserver/wms?BBOX=3130860.6785'\
+            '60819,0.0,3757032.814272983,626172.1357121639&CRS=EPSG:900913&FOR'\
+            'MAT=image/png&HEIGHT=256&LAYERS=druid:cz128vq0535&REQUEST=GetMap&'\
+            'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
+            '256'
         ).to_return(headers: { 'Content-Type' => 'image/png' })
         expect(subject.tile).to be_an Faraday::Response
         expect(stub).to have_been_requested
@@ -31,10 +32,11 @@ describe GeoMonitor::Requests::WMS do
       it 'returns a GeoMonitor::FailedResponse' do
         stub = stub_request(
           :get,
-          'https://geowebservices.stanford.edu/geoserver/wms?BBOX=3264742.590082'\
-            '5034,0.0,3995282.329624239,625168.6816906171&CRS=EPSG:900913&FORMAT'\
-            '=image/png&HEIGHT=256&LAYERS=druid:cz128vq0535&REQUEST=GetMap&SERVI'\
-            'CE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH=256'
+          'https://geowebservices.stanford.edu/geoserver/wms?BBOX=3130860.6785'\
+            '60819,0.0,3757032.814272983,626172.1357121639&CRS=EPSG:900913&FOR'\
+            'MAT=image/png&HEIGHT=256&LAYERS=druid:cz128vq0535&REQUEST=GetMap&'\
+            'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
+            '256'
         ).to_raise(Faraday::ConnectionFailed)
         expect(subject.tile).to be_an GeoMonitor::FailedResponse
         expect(stub).to have_been_requested
@@ -42,10 +44,11 @@ describe GeoMonitor::Requests::WMS do
       it 'returns a GeoMonitor::FailedResponse' do
         stub = stub_request(
           :get,
-          'https://geowebservices.stanford.edu/geoserver/wms?BBOX=3264742.590082'\
-            '5034,0.0,3995282.329624239,625168.6816906171&CRS=EPSG:900913&FORMAT'\
-            '=image/png&HEIGHT=256&LAYERS=druid:cz128vq0535&REQUEST=GetMap&SERVI'\
-            'CE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH=256'
+          'https://geowebservices.stanford.edu/geoserver/wms?BBOX=3130860.6785'\
+            '60819,0.0,3757032.814272983,626172.1357121639&CRS=EPSG:900913&FOR'\
+            'MAT=image/png&HEIGHT=256&LAYERS=druid:cz128vq0535&REQUEST=GetMap&'\
+            'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
+            '256'
         ).to_raise(Faraday::TimeoutError)
         expect(subject.tile).to be_an GeoMonitor::FailedResponse
         expect(stub).to have_been_requested
