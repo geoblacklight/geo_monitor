@@ -12,10 +12,10 @@ module GeoMonitor
     def to_3857
       d = Math::PI / 180
       max = 1 - 1E-15
-      sin = [[Math.sin(lng * d), max].min, -max].max
+      sin = [[Math.sin(lat * d), max].min, -max].max
       self.class.new(
-        lat: ::GeoMonitor::Constants::R * lat * d,
-        lng: ::GeoMonitor::Constants::R * Math.log((1 + sin) / (1 - sin)) / 2
+        lng: ::GeoMonitor::Constants::R * lng * d,
+        lat: ::GeoMonitor::Constants::R * Math.log((1 + sin) / (1 - sin)) / 2
       )
     end
 
