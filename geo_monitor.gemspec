@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'rails', '>= 5.1.4', '< 6'
   s.add_dependency 'faraday'
-  s.add_dependency 'engine_cart'
 
+  s.add_development_dependency 'engine_cart', '~> 2.0'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'webmock'
