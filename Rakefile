@@ -7,8 +7,6 @@ end
 require 'bundler/gem_tasks'
 require 'engine_cart/rake_task'
 
-EngineCart.fingerprint_proc = EngineCart.rails_fingerprint_proc
-
 namespace :geomonitor do
   desc 'Create the test rails app'
   task generate: ['engine_cart:generate'] do
