@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'LICENSE', 'Rakefile', 'README.md']
 
-  s.add_dependency 'rails', '~> 5.1.4'
+  s.add_dependency 'rails', '>= 5.1.4', '< 6'
   s.add_dependency 'faraday'
   s.add_dependency 'engine_cart'
 
