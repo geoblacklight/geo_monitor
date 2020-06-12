@@ -45,7 +45,7 @@ module GeoMonitor
             request.options.timeout = 10
             request.options.open_timeout = 10
           end
-        rescue Faraday::ConnectionFailed, Faraday::TimeoutError => e
+        rescue Faraday::ConnectionFailed, Faraday::TimeoutError, Faraday::SSLError => e
           ::GeoMonitor::FailedResponse.new(
             { url: conn.url_prefix.to_s },
             e.class,
