@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 ENV['RAILS_ENV'] ||= 'test'
 
 require 'engine_cart'
@@ -40,7 +42,7 @@ RSpec.configure do |config|
   # triggering implicit auto-inclusion in groups with matching metadata.
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
+  config.fixture_path = Rails.root.join('spec/fixtures').to_s
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe GeoMonitor::Status do
@@ -8,25 +10,29 @@ describe GeoMonitor::Status do
       url: layer.url, bbox: layer.bounding_box, layers: layer.layername
     )
   end
+
   before do
     stub_request(
       :get,
-      %r{https:\/\/geowebservices.stanford.edu\/geoserver\/wms}
+      %r{https://geowebservices.stanford.edu/geoserver/wms}
     ).to_return(status: 200, headers: { 'Content Type' => 'image/png' })
   end
+
   describe '#limit_by_layer' do
     it 'never will create more than the max allowed statuses per layer' do
       response = request.tile
       expect { 10.times { described_class.from_response(response, layer, 0.007) } }
-        .to change { described_class.count }.by(5)
+        .to change(described_class, :count).by(5)
     end
-    it 'will delete the first entries' do
+
+    it 'deletes the first entries' do
       response = request.tile
       first_status = described_class.from_response(response, layer, 0.007)
       5.times { described_class.from_response(response, layer, 0.007) }
-      expect { described_class.find(first_status.id) } .to raise_error(ActiveRecord::RecordNotFound)
+      expect { described_class.find(first_status.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
   describe '.from_response' do
     it 'creates a GeoMonitor::Status' do
       response = request.tile

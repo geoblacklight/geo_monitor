@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe GeoMonitor::Requests::WMS do
+  subject(:request) { described_class.new(bbox:, url:, layers:) }
+
   let(:url) { 'https://geowebservices.stanford.edu/geoserver/wms' }
   let(:bbox) do
     GeoMonitor::BoundingBox.new(
@@ -11,7 +15,6 @@ describe GeoMonitor::Requests::WMS do
     )
   end
   let(:layers) { 'druid:cz128vq0535' }
-  subject { described_class.new(bbox: bbox, url: url, layers: layers) }
 
   describe '#tile' do
     context 'when everything is fine' do
@@ -24,11 +27,12 @@ describe GeoMonitor::Requests::WMS do
             'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
             '256'
         ).to_return(headers: { 'Content-Type' => 'image/png' })
-        expect(subject.tile).to be_an Faraday::Response
+        expect(request.tile).to be_an Faraday::Response
         expect(stub).to have_been_requested
       end
     end
-    context 'when bad things happen' do
+
+    context 'when the connection fails' do
       it 'returns a GeoMonitor::FailedResponse' do
         stub = stub_request(
           :get,
@@ -38,9 +42,12 @@ describe GeoMonitor::Requests::WMS do
             'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
             '256'
         ).to_raise(Faraday::ConnectionFailed)
-        expect(subject.tile).to be_an GeoMonitor::FailedResponse
+        expect(request.tile).to be_an GeoMonitor::FailedResponse
         expect(stub).to have_been_requested
       end
+    end
+
+    context 'when the request times out' do
       it 'returns a GeoMonitor::FailedResponse' do
         stub = stub_request(
           :get,
@@ -50,9 +57,12 @@ describe GeoMonitor::Requests::WMS do
             'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
             '256'
         ).to_raise(Faraday::TimeoutError)
-        expect(subject.tile).to be_an GeoMonitor::FailedResponse
+        expect(request.tile).to be_an GeoMonitor::FailedResponse
         expect(stub).to have_been_requested
       end
+    end
+
+    context 'when there is an SSL error' do
       it 'returns a GeoMonitor::FailedResponse' do
         stub = stub_request(
           :get,
@@ -62,7 +72,7 @@ describe GeoMonitor::Requests::WMS do
             'SERVICE=WMS&SRS=EPSG:3857&STYLES=&TILED=true&VERSION=1.1.1&WIDTH='\
             '256'
         ).to_raise(Faraday::SSLError)
-        expect(subject.tile).to be_an GeoMonitor::FailedResponse
+        expect(request.tile).to be_an GeoMonitor::FailedResponse
         expect(stub).to have_been_requested
       end
     end

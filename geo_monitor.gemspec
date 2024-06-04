@@ -16,11 +16,15 @@ Gem::Specification.new do |s|
 
   s.files = Dir['{app,config,db,lib}/**/*', 'LICENSE', 'Rakefile', 'README.md']
 
-  s.add_dependency 'rails', '>= 5.2', '< 7.2'
+  s.add_dependency 'rails', '>= 6.1', '< 7.2'
   s.add_dependency 'faraday'
 
   s.add_development_dependency 'engine_cart', '~> 2.0'
   s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'rspec-rails'
   s.add_development_dependency 'webmock'
+  s.add_development_dependency 'rspec'
+  s.add_development_dependency 'rspec-rails'
+  s.add_development_dependency 'rubocop'
+  s.add_development_dependency 'rubocop-rspec'
+  s.add_development_dependency 'rubocop-rails'
 end

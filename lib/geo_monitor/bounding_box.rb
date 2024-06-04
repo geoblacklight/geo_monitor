@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoMonitor
   ##
   # Bounding Box
@@ -59,7 +61,7 @@ module GeoMonitor
           else
             x
           end
-      { x: x, y: y }
+      { x:, y: }
     end
   end
 end
