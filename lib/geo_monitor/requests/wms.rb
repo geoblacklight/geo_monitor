@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GeoMonitor
   module Requests
     ##
@@ -33,12 +35,12 @@ module GeoMonitor
       ##
       # Request the tile.
       def tile
-        unless url.present?
+        if url.blank?
           return ::GeoMonitor::FailedResponse.new(
-            { url: url }, 'No URL provided', {}
+            { url: }, 'No URL provided', {}
           )
         end
-        conn = Faraday.new(url: url)
+        conn = Faraday.new(url:)
         begin
           conn.get do |request|
             request.params = request_params

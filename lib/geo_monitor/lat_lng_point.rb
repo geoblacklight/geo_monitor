@@ -1,6 +1,10 @@
+# frozen_string_literal: true
+
 module GeoMonitor
+  # A point in space with latitude and longitude
   class LatLngPoint
     attr_accessor :lat, :lng
+
     def initialize(lat: 0, lng: 0)
       @lat = lat.to_f
       @lng = lng.to_f
@@ -26,7 +30,7 @@ module GeoMonitor
       lng = xtile / n * 360.0 - 180.0
       lat_rad = Math.atan(Math.sinh(Math::PI * (1 - 2 * ytile / n)))
       lat = 180.0 * (lat_rad / Math::PI)
-      new(lat: lat, lng: lng)
+      new(lat:, lng:)
     end
   end
 end

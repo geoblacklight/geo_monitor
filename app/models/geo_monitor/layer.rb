@@ -1,6 +1,9 @@
+# frozen_string_literal: true
+
 module GeoMonitor
+  # A single layer in a GeoBlacklight instance
   class Layer < ApplicationRecord
-    has_many :statuses
+    has_many :statuses, dependent: :destroy
 
     ##
     # @param [String] schema_json
@@ -32,7 +35,7 @@ module GeoMonitor
       response = nil
       time = Benchmark.measure do
         response = ::GeoMonitor::Requests::WMS.new(
-          bbox: bounding_box, url: url, layers: layername
+          bbox: bounding_box, url:, layers: layername
         ).tile
       end
       ::GeoMonitor::Status.from_response(response, self, time.real.to_f)
